@@ -188,7 +188,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
     case KC_BSPC:
      if (record->event.pressed) {
-       oled_write_P(PSTR("FUCK"), false);
+       oled_write_raw_P(PSTR("FUCK"), false);
        break;
      }
   }
@@ -198,40 +198,28 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 // OLED STUFF STARTS HERE
 // based on https://github.com/qmk/qmk_firmware/blob/master/keyboards/kyria/keymaps/j-inc/keymap.c
 
-// In your rules.mk make sure you have:
-// OLED_DRIVER_ENABLE = yes
-// WPM_ENABLE = yes
-
 #ifdef OLED_ENABLE
 
+// Rotate the OLED 180 degrees, needed if the display is mounted with the pins to the right
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 	return OLED_ROTATION_180;
 }
 
 // Animation Definitions
 #define IDLE_FRAMES 5
-#define IDLE_SPEED 5  // below this wpm value your animation will idle
-// #define PREP_FRAMES 1 // uncomment if >1
+#define LOWER_ANIMATION_WPM 5  // Lower animation threshold
+#define UPPER_ANIMATION_WPM 10  // Upper animation threshold
 #define TAP_FRAMES 2
-#define TAP_SPEED 10  // above this wpm value typing animation to trigger
-
-#define ANIM_FRAME_DURATION 200  // how long each frame lasts in ms
-#define ANIM_SIZE 636  // number of bytes in array, minimize for adequate firmware size, max is 1024
+#define ANIM_FRAME_DURATION 150  // How long each frame lasts in ms
+#define ANIM_SIZE 512 // Number of bytes in array, minimize for adequate firmware size, max is 1024
 
 uint32_t anim_timer = 0;
 uint32_t anim_sleep = 0;
-uint8_t  current_idle_frame = 0;
-// uint8_t current_prep_frame = 0; // uncomment if PREP_FRAMES >1
+uint8_t current_idle_frame = 0;
 uint8_t current_tap_frame = 0;
 
 // Code containing pixel art, contains:
 // 5 idle frames, 1 prep frame, and 2 tap frames
-
-// To make your own pixel art:
-// save a png/jpeg of an 128x32 image (resource: https://www.pixilart.com/draw )
-// follow this guide up to and including "CONVERT YOUR IMAGE" https://docs.splitkb.com/hc/en-us/articles/360013811280-How-do-I-convert-an-image-for-use-on-an-OLED-display-
-// replace numbers in brackets with your own
-// if you start getting errors when compiling make sure you didn't accedentally delete a bracket
 static void render_anim(void) {
     static const char PROGMEM idle[IDLE_FRAMES][ANIM_SIZE] = {
         { // Frame Idle 1 - 128 x 32
@@ -375,8 +363,6 @@ static void render_anim(void) {
          0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
         },};
 
-
-
     static const char PROGMEM prep[][ANIM_SIZE] = {
         { // Frame Prepare 1
          0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -406,7 +392,6 @@ static void render_anim(void) {
          0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
          0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
         },};
-
 
     static const char PROGMEM tap[TAP_FRAMES][ANIM_SIZE] = {
         { // Frame Tap Right
@@ -466,20 +451,18 @@ static void render_anim(void) {
          0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
         },};
 
-
-
     // assumes 1 frame prep stage
 
     void animation_phase(void) {
-        if (get_current_wpm() <= IDLE_SPEED) {
+        if (get_current_wpm() <= LOWER_ANIMATION_WPM) {
             current_idle_frame = (current_idle_frame + 1) % IDLE_FRAMES;
             oled_write_raw_P(idle[abs((IDLE_FRAMES - 1) - current_idle_frame)], ANIM_SIZE);
         }
-        if (get_current_wpm() > IDLE_SPEED && get_current_wpm() < TAP_SPEED) {
+        if (get_current_wpm() > LOWER_ANIMATION_WPM && get_current_wpm() < UPPER_ANIMATION_WPM) {
             // oled_write_raw_P(prep[abs((PREP_FRAMES-1)-current_prep_frame)], ANIM_SIZE); // uncomment if IDLE_FRAMES >1
             oled_write_raw_P(prep[0], ANIM_SIZE);  // remove if IDLE_FRAMES >1
         }
-        if (get_current_wpm() >= TAP_SPEED) {
+        if (get_current_wpm() >= UPPER_ANIMATION_WPM) {
             current_tap_frame = (current_tap_frame + 1) % TAP_FRAMES;
             oled_write_raw_P(tap[abs((TAP_FRAMES - 1) - current_tap_frame)], ANIM_SIZE);
         }
@@ -503,27 +486,27 @@ static void render_anim(void) {
 
 // Void established by QMK to write to the OLED display
 void oled_task_user(void) {
-    render_anim();  // renders pixelart
+    render_anim();  // Call the animation
 
     // Get layer state and display the currently active layer in the top left of the OLED display
     switch (get_highest_layer(layer_state|default_layer_state)) {
       case _QWERTY:
-      oled_write_P(PSTR("QWERTY"), false);
+      oled_write_P(PSTR("QWERTY\r"), false);
       break;
       case _COLEMAK:
-      oled_write_P(PSTR("COLEMAK"), false);
+      oled_write_P(PSTR("COLEMAK\r"), false);
       break;
       case _NUMPAD:
-      oled_write_P(PSTR("NUMPAD"), false);
+      oled_write_P(PSTR("NUMPAD\r"), false);
       break;
       case _LOWER:
-      oled_write_P(PSTR("LOWER"), false);
+      oled_write_P(PSTR("\rLOWER\r"), false);
       break;
       case _RAISE:
-      oled_write_P(PSTR("RAISE"), false);
+      oled_write_P(PSTR("\rRAISE\r"), false);
       break;
       case _ADJUST:
-      oled_write_P(PSTR("ADJUST"), false);
+      oled_write_P(PSTR("\rADJUST\r"), false);
       break;
     }
 }
