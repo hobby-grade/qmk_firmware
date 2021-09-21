@@ -2,6 +2,10 @@
 
 ### WARNING: This firmware uses the ATMEL bootloader configuration for compatibility with the [BIT-C MCU](https://nullbits.co/bit-c/). If your board uses a Caterina bootloader MCU, such as a standard Pro Micro, please remove the ATMEL bootloader configuration option before flashing on your device! 
 
+### Purpose:
+This keymap is designed with efficiency in mind. 
+
+### OLED Support:
 In order to enable OLED support, you will need to have the options:
 ```
 OLED_ENABLE = yes
@@ -11,8 +15,9 @@ WPM_ENABLE = yes
 ```
 contained in your ```rules.mk```.
 
-To make your own pixel art:
-save a png/jpeg of an 128x32 image (resource: https://www.pixilart.com/draw )
-follow this guide up to and including "CONVERT YOUR IMAGE" https://docs.splitkb.com/hc/en-us/articles/360013811280-How-do-I-convert-an-image-for-use-on-an-OLED-display-
-replace numbers in brackets with your own
-if you start getting errors when compiling make sure you didn't accedentally delete a bracket
+### Resources (images should be 128x32 pixels):
+* To make your own pixel art: https://www.pixilart.com/draw
+* QMK Logo Editor: https://joric.github.io/qle/
+* Another way to create a byte array from your image: https://javl.github.io/image2cpp/
+* Good guide to creating images for OLED: https://docs.splitkb.com/hc/en-us/articles/360013811280-How-do-I-convert-an-image-for-use-on-an-OLED-display-
+

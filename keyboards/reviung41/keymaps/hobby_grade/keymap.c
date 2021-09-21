@@ -29,8 +29,12 @@ enum layer_names {
 
 enum layer_keycodes {
     COLEMAK = SAFE_RANGE,
-    QWERTY
+    QWERTY,
+    MACSHT, // macOS screenshot shortcut
+    MACREC, // macOS screenshot full tool shortcut
+    WINSHT, // Windows 10 screenshot shortcut
 };
+
 
 #define LOWER  MO(_LOWER)
 #define RAISE  MO(_RAISE)
@@ -136,7 +140,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------------+------+------+------+------+------+------|
  * |   ~  |      |      |  UP  |      |      |            |      |   -  |   =  |   [  |   ]  |   \  |
  * |------+------+------+------+------+------+------------+------+------+------+------+------+------|
- * |  TAB |      | LEFT | DOWN | RGHT |      |            |      |      |      |      |      |      |
+ * |  TAB |      | LEFT | DOWN | RGHT |      |            |      |      |      |WINSHT|MACSHT|MACREC|
  * `------+------+------+------+------+------+------------+------+------+------+------+------+------'
  *                             |NUMPAD|      |    ENTR    |      | ALT  |
  *                             `----------------------------------------'
@@ -144,7 +148,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  [_RAISE] = LAYOUT_reviung41(
    KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,      KC_5,               KC_6,    KC_7,     KC_8,     KC_9,     KC_0,     KC_DEL,
    KC_TILD,  _______,  _______,  KC_UP,    _______,  _______,            _______,  KC_MINS,  KC_EQL,   KC_LBRC,  KC_RBRC,  KC_BSLS,
-   KC_TAB,   _______,  KC_LEFT,  KC_DOWN,  KC_RGHT,  _______,            _______,  _______,  _______,  _______,  _______,  _______,
+   KC_TAB,   _______,  KC_LEFT,  KC_DOWN,  KC_RGHT,  _______,            _______,  _______,  _______,  WINSHT,   MACSHT,   MACREC,
                                            NUMPAD,   _______,   KC_ENT,  _______,  KC_LALT
  ),
 
@@ -176,21 +180,36 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case QWERTY:
      if (record->event.pressed) {
-      set_single_persistent_default_layer(_QWERTY);
+        set_single_persistent_default_layer(_QWERTY);
     }
       return false;
       break;
     case COLEMAK:
      if (record->event.pressed) {
-      set_single_persistent_default_layer(_COLEMAK);
+        set_single_persistent_default_layer(_COLEMAK);
     }
       return false;
       break;
     case KC_BSPC:
      if (record->event.pressed) {
-       oled_write_raw_P(PSTR("FUCK"), false);
-       break;
+        oled_write_raw_P(PSTR("FUCK"), false);
      }
+     break;
+    case MACSHT:
+     if (record->event.pressed) {
+         SEND_STRING(SS_LCMD(SS_LSFT("4")));
+     }
+     break;
+    case MACREC:
+     if (record->event.pressed) {
+         SEND_STRING(SS_LCMD(SS_LSFT("5")));
+     }
+     break;
+    case WINSHT:
+     if (record->event.pressed) {
+         SEND_STRING(SS_LGUI(SS_LSFT("S")));
+     }
+     break;
   }
   return true;
 }
@@ -491,7 +510,7 @@ void oled_task_user(void) {
     // Get layer state and display the currently active layer in the top left of the OLED display
     switch (get_highest_layer(layer_state|default_layer_state)) {
       case _QWERTY:
-      oled_write_P(PSTR("QWERTY\r"), false);
+      oled_write_P(PSTR("ISHYGDDT\r"), false);
       break;
       case _COLEMAK:
       oled_write_P(PSTR("COLEMAK\r"), false);
