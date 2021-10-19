@@ -20,6 +20,7 @@ char wpm_str[10];
 
 enum layer_names {
     _COLEMAK,
+    _MACOS,
     _QWERTY,
     _NUMPAD,
     _LOWER,
@@ -29,6 +30,7 @@ enum layer_names {
 
 enum layer_keycodes {
     COLEMAK = SAFE_RANGE,
+    MACOS,
     QWERTY,
     MACSHT, // macOS screenshot shortcut
     MACREC, // macOS screenshot full tool shortcut
@@ -98,6 +100,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                            KC_LCTL,   LOWER,    KC_SPC,   RAISE,    KC_RGUI
  ),
 
+/* MACOS FORMATTED LAYER
+ * ,------------------------------------------------------------------------------------------------.
+ * |      |      |      |      |      |      |            |      |      |      |      |      |      |
+ * |------+------+------+------+------+------+------------+------+------+------+------+------+------|
+ * |      |      |      |      |      |      |            |      |      |      |      |      |      |
+ * |------+------+------+------+------+------+------------+------+------+------+------+------+------|
+ * |      |      |      |      |      |      |            |      |      |      |      |      |      |
+ * `------+------+------+------+------+------+------------+------+------+------+------+------+------'
+ *                             |      |      |            |      |      |
+ *                             `----------------------------------------'
+ */
+ [_MACOS] = LAYOUT_reviung41(
+   KC_TAB,   KC_Q,     KC_W,     KC_F,     KC_P,      KC_G,               KC_J,     KC_L,     KC_U,     KC_Y,     KC_QUOT,  KC_BSPC,
+   KC_ESC,   KC_A,     KC_R,     KC_S,     KC_T,      KC_D,               KC_H,     KC_N,     KC_E,     KC_I,     KC_O,     KC_ENT,
+   KC_LSFT,  KC_Z,     KC_X,     KC_C,     KC_V,      KC_B,               KC_K,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,  KC_SCLN,
+                                           KC_LGUI,   LOWER,    KC_SPC,   RAISE,    KC_LCTL
+ ),
+
 /* NUMPAD
  * ,------------------------------------------------------------------------------------------------.
  * |  TAB |   1  |   2  |   3  |   4  |   5  |            |   6  |   7  |   8  |   9  |   0  | BSPC |
@@ -165,7 +185,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
  [_ADJUST] = LAYOUT_reviung41(
    XXXXXXX,   RESET,   XXXXXXX,  XXXXXXX,  XXXXXXX,   XXXXXXX,            XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
-   XXXXXXX,   XXXXXXX, XXXXXXX,  XXXXXXX,  XXXXXXX,   XXXXXXX,            XXXXXXX,  COLEMAK,  QWERTY,   XXXXXXX,  XXXXXXX,  XXXXXXX,
+   XXXXXXX,   XXXXXXX, XXXXXXX,  XXXXXXX,  XXXXXXX,   XXXXXXX,            XXXXXXX,  COLEMAK,  QWERTY,   MACOS,    XXXXXXX,  XXXXXXX,
    XXXXXXX,   XXXXXXX, XXXXXXX,  XXXXXXX,  XXXXXXX,   XXXXXXX,            XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
                                            _______,   _______,  XXXXXXX,  _______,  _______
  ),
@@ -190,25 +210,31 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
       return false;
       break;
+    case MACOS:
+     if (record->event.pressed) {
+       set_single_persistent_default_layer(_MACOS);
+    }
+      return false;
+      break;
     case KC_BSPC:
      if (record->event.pressed) {
         oled_write_raw_P(PSTR("FUCK"), false);
-     }
+    }
      break;
     case MACSHT:
      if (record->event.pressed) {
          SEND_STRING(SS_LCMD(SS_LSFT("4")));
-     }
+    }
      break;
     case MACREC:
      if (record->event.pressed) {
          SEND_STRING(SS_LCMD(SS_LSFT("5")));
-     }
+    }
      break;
     case WINSHT:
      if (record->event.pressed) {
          SEND_STRING(SS_LGUI(SS_LSFT("S")));
-     }
+    }
      break;
   }
   return true;
@@ -514,6 +540,9 @@ void oled_task_user(void) {
       break;
       case _COLEMAK:
       oled_write_P(PSTR("COLEMAK\r"), false);
+      break;
+      case _MACOS:
+      oled_write_P(PSTR("APPLEL\r"), false);
       break;
       case _NUMPAD:
       oled_write_P(PSTR("NUMPAD\r"), false);
