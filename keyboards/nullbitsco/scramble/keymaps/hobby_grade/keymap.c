@@ -1,4 +1,4 @@
-/.i
+/*
 Copyright 2021 Stefan Hancock
 
 This program is free software: you can redistribute it and/or modify

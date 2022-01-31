@@ -46,7 +46,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_COLEMAK] = LAYOUT_ortho_3x10(
     KC_Q,          KC_W,          KC_F,         KC_P,          KC_G,             KC_J,            KC_L,          KC_U,         KC_Y,         KC_BSPC,
     LCTL_T(KC_A),  LGUI_T(KC_R),  LALT_T(KC_S), KC_T,          KC_D,             KC_H,            KC_N,          KC_E,         KC_I,         KC_O,
-    KC_Z,          KC_X,          KC_C,         LT(_FN3, KC_V),LT(_FN2, KC_DEL),LT(_FN1, KC_SPC),LT(_FN4, KC_B),KC_K,         KC_M,         RSFT_T(KC_ENT)
+    KC_Z,          KC_X,          KC_C,         LT(_FN3, KC_V),LT(_FN2, KC_DEL),LT(_FN1, KC_SPC), LT(_FN4, KC_B),KC_K,         KC_M,         RSFT_T(KC_ENT)
 ),
 
 /* FN1

@@ -22,7 +22,6 @@ enum layer_names {
     _COLEMAK,
     _MACOS,
     _QWERTY,
-    _NUMPAD,
     _LOWER,
     _RAISE,
     _ADJUST
@@ -41,8 +40,6 @@ enum layer_keycodes {
 #define LOWER  MO(_LOWER)
 #define RAISE  MO(_RAISE)
 #define ADJUST MO(_ADJUST)
-
-#define NUMPAD TG(_NUMPAD)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -118,24 +115,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                            KC_LGUI,   LOWER,    KC_SPC,   RAISE,    KC_LCTL
  ),
 
-/* NUMPAD
- * ,------------------------------------------------------------------------------------------------.
- * |  TAB |   1  |   2  |   3  |   4  |   5  |            |   6  |   7  |   8  |   9  |   0  | BSPC |
- * |------+------+------+------+------+------+------------+------+------+------+------+------+------|
- * |  ESC |      |      |      |      |      |            |      |   4  |   5  |   6  |      | ENTR |
- * |------+------+------+------+------+------+------------+------+------+------+------+------+------|
- * |      |      |      |      |      |      |            |      |   1  |   2  |   3  |      |      |
- * `------+------+------+------+------+------+------------+------+------+------+------+------+------'
- *                             |      |      |      0     |      |   .  |
- *                             `----------------------------------------'
- */
- [_NUMPAD] = LAYOUT_reviung41(
-   KC_TAB,   KC_1,     KC_2,     KC_3,     KC_4,      KC_5,               KC_6,    KC_7,     KC_8,     KC_9,     KC_0,     KC_BSPC,
-   KC_ESC,   _______,  _______,  _______,  _______,  _______,            _______,  KC_4,     KC_5,     KC_6,     _______,  KC_ENT,
-   _______,  _______,  _______,  _______,  _______,  _______,            _______,  KC_1,     KC_2,     KC_3,     _______,  _______,
-                                           _______,  _______,    KC_0,   _______,  KC_DOT
- ),
-
 /* LOWER
  * ,------------------------------------------------------------------------------------------------.
  * |   `  |   !  |   @  |   #  |   $  |   %  |            |   ^  |   &  |   *  |   (  |   )  |  DEL |
@@ -150,8 +129,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  [_LOWER] = LAYOUT_reviung41(
    KC_GRV,   KC_EXLM,  KC_AT,    KC_HASH,  KC_DLR,   KC_PERC,            KC_CIRC,  KC_AMPR,  KC_ASTR,  KC_LPRN,  KC_RPRN,  KC_DEL,
    KC_TILD,  _______,  _______,  KC_UP,    _______,  _______,            _______,  KC_UNDS,  KC_PLUS,  KC_LCBR,  KC_RCBR,  KC_PIPE,
-   KC_TAB,   _______,  KC_LEFT,  KC_DOWN,  KC_RGHT,  _______,            _______,  _______,  _______,  _______,  _______,  _______,
-                                           NUMPAD,   _______,   KC_ENT,  _______,  KC_LALT
+   KC_TAB,   _______,  KC_LEFT,  KC_DOWN,  KC_RGHT,  _______,            _______,  _______,  KC_VOLD,  KC_VOLU,  _______,  _______,
+                                           _______,  _______,   KC_MPLY, _______,  KC_LALT
  ),
 
 /* RAISE
@@ -169,7 +148,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,      KC_5,               KC_6,    KC_7,     KC_8,     KC_9,     KC_0,     KC_DEL,
    KC_TILD,  _______,  _______,  KC_UP,    _______,  _______,            _______,  KC_MINS,  KC_EQL,   KC_LBRC,  KC_RBRC,  KC_BSLS,
    KC_TAB,   _______,  KC_LEFT,  KC_DOWN,  KC_RGHT,  _______,            _______,  _______,  _______,  WINSHT,   MACSHT,   MACREC,
-                                           NUMPAD,   _______,   KC_ENT,  _______,  KC_LALT
+                                           _______,  _______,   KC_ENT,  _______,  KC_LALT
  ),
 
 /* ADJUST
@@ -543,9 +522,6 @@ void oled_task_user(void) {
       break;
       case _MACOS:
       oled_write_P(PSTR("APPLEL\r"), false);
-      break;
-      case _NUMPAD:
-      oled_write_P(PSTR("NUMPAD\r"), false);
       break;
       case _LOWER:
       oled_write_P(PSTR("\rLOWER\r"), false);
