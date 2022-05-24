@@ -1,10 +1,10 @@
-# devterm
+# DevTerm 65%
 
-![devterm](imgur.com image replace me!)
+![devterm](https://static.wixstatic.com/media/3833f7_bd253c47153b4605a9cb59cc6515cf37~mv2.png/v1/fill/w_900,h_420,al_c,q_90,enc_auto/keyboard_fig01.png)
 
 *A short description of the keyboard/project*
 
-* Keyboard Maintainer: [hobby-grade](https://github.com/yourusername)
+* Keyboard Maintainer: [hobby-grade](https://github.com/hobby-grade)
 * Hardware Supported: *The PCBs, controllers supported*
 * Hardware Availability: *Links to where you can find this hardware*
 
