@@ -1,0 +1,10 @@
+AUTO_SHIFT_ENABLE = yes # Autoshift function
+CONSOLE_ENABLE = no # Console Output
+LTO_ENABLE = yes # Link Time Optimization
+NKRO_ENABLE = yes # Enable N-Key Rollover
+OLED_ENABLE = yes
+WPM_ENABLE = yes
+RGBLIGHT_ENABLE = no
+OLED_DRIVER = SSD1306
+OLED_DRIVER_ENABLE = yes
+BOOTLOADER = atmel-dfu # Bootloader selection override for BIT-C MCU. If you are not using this MCU, then remove this line.
