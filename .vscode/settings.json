@@ -28,5 +28,43 @@
 	    "editor.formatOnSave": false
     },
     "C_Cpp.dimInactiveRegions": false,
-    "cmake.configureOnOpen": false
+    "cmake.configureOnOpen": false,
+    "favorites.resources": [
+        {
+            "filePath": "keyboards/doio",
+            "group": "Default"
+        },
+        {
+            "filePath": "keyboards/reviung/reviung41",
+            "group": "Default"
+        },
+        {
+            "filePath": "keyboards/handwired/void_ergo",
+            "group": "Default"
+        },
+        {
+            "filePath": "keyboards/handwired/void30",
+            "group": "Default"
+        },
+        {
+            "filePath": "keyboards/nullbitsco/scramble",
+            "group": "Default"
+        },
+        {
+            "filePath": "keyboards/spaceman/2_milk",
+            "group": "Default"
+        },
+        {
+            "filePath": "keyboards/alpha",
+            "group": "Default"
+        },
+        {
+            "filePath": "keyboards/keyboardio/atreus",
+            "group": "Default"
+        },
+        {
+            "filePath": "keyboards/planck/keymaps",
+            "group": "Default"
+        }
+    ]
 }

@@ -21,15 +21,12 @@
 #include "./lib/layer_status/layer_status.h"
 
 // Each layer gets a name for readability, which is then used in the keymap matrix below.
-// The underscores don't mean anything - you can have a layer called STUFF or any other name.
-// Layer names don't all need to be of the same length, obviously, and you can also skip them
-// entirely and just use numbers.
 
 enum layer_names {
-    _BASE,
-    _FN,
-    _FN1,
-    _FN2
+    ZERO,
+    ONE,
+    TWO,
+    THREE
 };
 
 // enum layer_keycodes { };
@@ -46,22 +43,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        ├───┼───┼───┼───┤      │Mut│
        │Fn2│ ← │ ↓ │ → │      └───┘
        └───┴───┴───┴───┘
-       ┌───┬───┬───┬───┐   ┌───┐ ┌───┐
-       │ ! │ @ │ # │ $ │   │   │ │   │
-       ├───┼───┼───┼───┤   └───┘ └───┘
-       │ % │ ^ │ & │ * │
-       ├───┼───┼───┼───┤
-       │ ( │ ) │   │   │      ┌───┐
-       ├───┼───┼───┼───┤      │   │
-       │   │   │   │   │      └───┘
-       └───┴───┴───┴───┘
 */
-    /*  Row:    0         1        2        3         4      */
-    [_BASE] = LAYOUT(
-                KC_1,     KC_2,    KC_3,    KC_4,     KC_MPLY,
-                KC_5,     KC_6,    KC_7,    KC_8,     TO(_FN),
-                KC_9,     KC_0,    KC_UP,   KC_ENT,   KC_MUTE,
-                MO(_FN2), KC_LEFT, KC_DOWN, KC_RIGHT
+    [ZERO] = LAYOUT(
+                _______,  _______, _______, _______,  _______,
+                _______,  _______, _______, _______,  TO(ONE),
+                _______,  _______, _______, _______,  _______,
+                _______,  _______, _______, _______
             ),
 
 /*
@@ -75,10 +62,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        │   │   │   │   │      └───┘
        └───┴───┴───┴───┘
 */
-    /*  Row:    0        1        2        3        4       */
-    [_FN] = LAYOUT(
+    [ONE] = LAYOUT(
                 _______, _______, _______, _______, _______,
-                _______, _______, _______, _______, TO(_FN1),
+                _______, _______, _______, _______, TO(TWO),
                 _______, _______, _______, _______, _______,
                 _______, _______, _______, _______
             ),
@@ -94,10 +80,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        │   │   │   │   │      └───┘
        └───┴───┴───┴───┘
 */
-    /*  Row:    0        1        2        3        4       */
-    [_FN1] = LAYOUT(
+    [TWO] = LAYOUT(
                 _______, _______, _______, _______, _______,
-                _______, _______, _______, _______, TO(_FN2),
+                _______, _______, _______, _______, TO(THREE),
                 _______, _______, _______, _______, _______,
                 _______, _______, _______, _______
             ),
@@ -113,10 +98,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        │   │Vai│Hud│Vad│      └───┘
        └───┴───┴───┴───┘
 */
-    /*  Row:    0        1        2        3        4        */
-    [_FN2] = LAYOUT(
+    [THREE] = LAYOUT(
                 RGB_SPI, RGB_SPD, _______, QK_BOOT, _______,
-                RGB_SAI, RGB_SAD, _______, _______, TO(_BASE),
+                RGB_SAI, RGB_SAD, _______, _______, TO(ZERO),
                 RGB_TOG, RGB_MOD, RGB_HUI, _______, _______,
                 _______, RGB_VAI, RGB_HUD, RGB_VAD
             ),
